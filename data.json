@@ -1,0 +1,189 @@
+{
+  "users": [
+    {
+      "id": "u-admin",
+      "name": "Aarav Mehta",
+      "email": "admin@example.test",
+      "role": "ADMIN",
+      "showroomId": "lucknow",
+      "passwordHash": "4dd7469f202e1eb91d20e1cf45925355:2daf36a593707f255b1f0957a5a33aebd46143a602712caf02e0c02792e6dc76c36155121dd09d2bb227cfeb33e989a65a6fd19cd6a76a21588f2359c89e5b9c"
+    },
+    {
+      "id": "u-consultant",
+      "name": "Nisha Verma",
+      "email": "consultant@example.test",
+      "role": "SALES_CONSULTANT",
+      "showroomId": "lucknow",
+      "passwordHash": "065ece5cf4ffd72bf04563f6ff77dbbd:c76a5559282b6e2c445b7076a396ce51a8874fa367c37427eb65cbf481965d0190cd1c866dfc239903ae224d16e7e1ca26540b504a56031b1e570f801e43a5d3"
+    },
+    {
+      "id": "u-buyer",
+      "name": "Demo Buyer",
+      "email": "buyer@example.test",
+      "role": "BUYER",
+      "passwordHash": "e4224377329e9f3559f24d030422f714:0d03ce9ce45a147163c1df90ea83033d414a144381dedf0648c087290670c4328fc2b17a1e246dba9a349a94e7f28d638adb2e2c74699c9a82cfa5d44154df28"
+    }
+  ],
+  "showrooms": [
+    {
+      "id": "lucknow",
+      "name": "Brand X Hazratganj",
+      "city": "Lucknow",
+      "address": "14 Mahatma Gandhi Marg"
+    },
+    {
+      "id": "gomti",
+      "name": "Brand X Gomti Nagar",
+      "city": "Lucknow",
+      "address": "Vibhuti Khand"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "NEW-H-02",
+      "type": "NEW",
+      "model": "Model H",
+      "variant": "ZX Automatic",
+      "fuel": "Petrol",
+      "transmission": "Automatic",
+      "year": 2026,
+      "km": 0,
+      "price": 1245000,
+      "status": "Available",
+      "image": "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=1400&q=85",
+      "colour": "Arctic White",
+      "specs": [
+        "1.5L turbo petrol",
+        "6-speed automatic",
+        "6 airbags"
+      ]
+    },
+    {
+      "id": "NEW-C-01",
+      "type": "NEW",
+      "model": "Model C",
+      "variant": "VX Manual",
+      "fuel": "Petrol",
+      "transmission": "Manual",
+      "year": 2026,
+      "km": 0,
+      "price": 985000,
+      "status": "Available",
+      "image": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1400&q=85",
+      "colour": "Midnight Blue",
+      "specs": [
+        "1.2L petrol",
+        "5-speed manual",
+        "Connected cabin"
+      ]
+    },
+    {
+      "id": "NEW-S-03",
+      "type": "NEW",
+      "model": "Model S",
+      "variant": "LX Hybrid",
+      "fuel": "Hybrid",
+      "transmission": "Automatic",
+      "year": 2026,
+      "km": 0,
+      "price": 1675000,
+      "status": "Available",
+      "image": "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1400&q=85",
+      "colour": "Satin Silver",
+      "specs": [
+        "Hybrid powertrain",
+        "Panoramic roof",
+        "360° camera"
+      ]
+    },
+    {
+      "id": "UC-1182",
+      "type": "USED",
+      "model": "Model C",
+      "variant": "VX",
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "year": 2022,
+      "km": 41200,
+      "price": 845000,
+      "status": "Available",
+      "image": "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1400&q=85",
+      "colour": "Graphite Grey",
+      "owners": 1,
+      "registration": "UP-32-AB-4812",
+      "inspection": "128-point inspection passed",
+      "certified": true
+    },
+    {
+      "id": "UC-1190",
+      "type": "USED",
+      "model": "Model S",
+      "variant": "LX",
+      "fuel": "Petrol",
+      "transmission": "Automatic",
+      "year": 2021,
+      "km": 58600,
+      "price": 512000,
+      "status": "Booked",
+      "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=85",
+      "colour": "Pearl White",
+      "owners": 2,
+      "registration": "UP-32-CD-1190",
+      "inspection": "Inspection completed",
+      "certified": true
+    }
+  ],
+  "pricing": [
+    {
+      "id": "p-h-lko",
+      "vehicleId": "NEW-H-02",
+      "city": "Lucknow",
+      "exShowroom": 1245000,
+      "roadTax": 149400,
+      "insurance": 52800,
+      "accessories": 18000,
+      "validUntil": "2026-12-31",
+      "active": true
+    },
+    {
+      "id": "p-c-lko",
+      "vehicleId": "NEW-C-01",
+      "city": "Lucknow",
+      "exShowroom": 985000,
+      "roadTax": 118200,
+      "insurance": 46700,
+      "accessories": 12000,
+      "validUntil": "2026-12-31",
+      "active": true
+    },
+    {
+      "id": "p-s-lko",
+      "vehicleId": "NEW-S-03",
+      "city": "Lucknow",
+      "exShowroom": 1675000,
+      "roadTax": 201000,
+      "insurance": 61200,
+      "accessories": 22000,
+      "validUntil": "2026-12-31",
+      "active": true
+    }
+  ],
+  "bookings": [],
+  "leads": [
+    {
+      "id": "lead-demo",
+      "name": "Riya Kapoor",
+      "email": "riya@example.test",
+      "phone": "+91 98765 43210",
+      "vehicleId": "NEW-H-02",
+      "showroomId": "lucknow",
+      "date": "2026-11-08",
+      "slot": "11:30",
+      "source": "Website",
+      "status": "NEW",
+      "assignedTo": "u-consultant",
+      "createdAt": "2026-11-03T09:30:58.120Z",
+      "consent": true
+    }
+  ]
+}
