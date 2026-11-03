@@ -19,9 +19,9 @@ A premium digital showroom for Brand X dealerships in Lucknow. Buyers can explor
 Prerequisite: Node.js 20 or newer.
 
 ```powershell
-npm install
-npm test
-npm start
+npm.cmd install
+npm.cmd test
+npm.cmd start
 ```
 
 Open `http://localhost:3000`. The first run creates the local data file. Full setup, environment variables, demo accounts, and production notes are in [deployment.md](deployment.md).

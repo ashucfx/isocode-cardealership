@@ -7,9 +7,9 @@ Node.js 20 or newer.
 ## Install and run
 
 ```powershell
-npm install
-npm test
-npm start
+npm.cmd install
+npm.cmd test
+npm.cmd start
 ```
 
 ## Environment variables
