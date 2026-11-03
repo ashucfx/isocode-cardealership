@@ -18,10 +18,10 @@ Copy `.env.example` to `.env` and set values as appropriate:
 
 - `PORT`
 - `SESSION_SECRET`
-- `AI_PROVIDER_URL`
-- `AI_PROVIDER_API_KEY`
+- `GEMINI_API_KEY`
+- `GEMINI_MODEL`
 
-The current local demo uses a deterministic server-side development adapter so the consultant workflow remains usable without an external provider. Configure a real server-side provider before production use; the browser must never receive the API key.
+Set `GEMINI_API_KEY` only on the server. When it is absent, the local development adapter keeps the review flow usable and labels its output as development-generated. When configured, Gemini generates the summary and first-reply draft server-side; the browser never receives the API key.
 
 ## Demo accounts
 

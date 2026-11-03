@@ -28,7 +28,7 @@ Role checks run on every protected endpoint. Session cookies are HttpOnly and Sa
 
 ## AI
 
-The server constructs prompts from the lead and vehicle records only. In a deployed environment, `AI_PROVIDER_URL` and `AI_PROVIDER_API_KEY` connect this boundary to the configured server-side LLM provider; keys never reach the browser. Summary and reply are separate, labelled actions; drafts are editable and never sent automatically. The local demo uses a deterministic development adapter so reviewers can exercise the complete UI without a third-party key. In production, provider output must be schema-validated and rejected on malformed or unsupported content. No AI output affects price, inventory or booking availability.
+The server constructs prompts from the lead and vehicle records only. In a deployed environment, `GEMINI_API_KEY` and `GEMINI_MODEL` connect this boundary to Google Gemini; the key never reaches the browser. Summary and reply are separate, labelled actions; drafts are editable and never sent automatically. The local demo uses an explicit development adapter so reviewers can exercise the complete UI without a third-party key. Provider output is checked for a non-empty bounded response, and provider failures return a clear manual-writing fallback. No AI output affects price, inventory or booking availability.
 
 ## Testing and performance
 

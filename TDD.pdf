@@ -1,0 +1,102 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Length 2918 >>
+stream
+BT /F1 10 Tf 54 760 Td 14 TL
+(# Technical Design Document) Tj T*
+() Tj T*
+(**GitHub:** https://github.com/ashucfx/isocode-cardealership) Tj T*
+(**Live application:** Not deployed; local run instructions are in `deployment.md`.) Tj T*
+() Tj T*
+(## Problem and scope) Tj T*
+() Tj T*
+(Brand X needs a premium customer journey that converts browsing into a test-drive lead and gives) Tj T*
+(consultants an actionable inbox. This build covers inventory, transparent Lucknow pricing,) Tj T*
+(test-drive booking, lead assignment, consultant assistance, and admin pricing control. Payments,) Tj T*
+(DMS, WhatsApp, service booking, and analytics are future scope.) Tj T*
+() Tj T*
+(## Assumptions) Tj T*
+() Tj T*
+(- Lucknow is the initial city and has two fictional showrooms.) Tj T*
+(- Admin is the authorized used-car pricing role.) Tj T*
+(- A local JSON repository is used for zero-dependency evaluation; the route and domain boundaries) Tj T*
+(are designed for PostgreSQL/Prisma replacement. This is an explicit take-home trade-off, not a) Tj T*
+(production database recommendation.) Tj T*
+(- AI output is assistance only and must be reviewed.) Tj T*
+() Tj T*
+(## Architecture) Tj T*
+() Tj T*
+(The Node server exposes REST-like JSON routes and serves a responsive static client. Domain) Tj T*
+(operations \(price calculation, booking conflict checks, assignment and authorization\) execute) Tj T*
+(server-side. The client renders API data and never owns authoritative state.) Tj T*
+() Tj T*
+(## Business rules) Tj T*
+() Tj T*
+(`onRoad = exShowroom + roadTax + insurance + accessories`. Only active, non-expired city records) Tj T*
+(participate. Test-drive uniqueness is enforced by showroom/date/slot. A new lead is assigned to a) Tj T*
+(consultant at the selected showroom; an unassigned lead is never silently presented as owned.) Tj T*
+() Tj T*
+(## Security and privacy) Tj T*
+() Tj T*
+(Role checks run on every protected endpoint. Session cookies are HttpOnly and SameSite. Booking) Tj T*
+(requires explicit consent, and registration numbers are masked before leaving the server. Production) Tj T*
+(requires hashed passwords, HTTPS, rate limiting, CSRF protection and a managed secret store.) Tj T*
+() Tj T*
+(## AI) Tj T*
+() Tj T*
+(The server constructs prompts from the lead and vehicle records only. In a deployed environment,) Tj T*
+(`AI_PROVIDER_URL` and `AI_PROVIDER_API_KEY` connect this boundary to the configured server-side LLM) Tj T*
+(provider; keys never reach the browser. Summary and reply are separate, labelled actions; drafts are) Tj T*
+(editable and never sent automatically. The local demo uses a deterministic development adapter so) Tj T*
+(reviewers can exercise the complete UI without a third-party key. In production, provider output) Tj T*
+(must be schema-validated and rejected on malformed or unsupported content. No AI output affects) Tj T*
+(price, inventory or booking availability.) Tj T*
+ET
+endstream
+endobj
+3 0 obj
+<< /Type /Page /Parent 6 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 2 0 R >>
+endobj
+4 0 obj
+<< /Length 560 >>
+stream
+BT /F1 10 Tf 54 760 Td 14 TL
+() Tj T*
+(## Testing and performance) Tj T*
+() Tj T*
+(`npm test` covers the deterministic price calculation and missing-pricing behavior. The booking) Tj T*
+(route re-checks availability to prevent races at the application boundary. Production follow-up) Tj T*
+(should add PostgreSQL transaction tests and Playwright coverage for the buyer-to-consultant journey.) Tj T*
+(Static assets are small and images use responsive remote URLs; performance must be measured on the) Tj T*
+(deployment target before making a 4G claim.) Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 6 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+7 0 obj
+<< /Type /Catalog /Pages 6 0 R >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000085 00000 n 
+0000003055 00000 n 
+0000003181 00000 n 
+0000003792 00000 n 
+0000003918 00000 n 
+0000003981 00000 n 
+trailer
+<< /Size 8 /Root 7 0 R >>
+startxref
+4030
+%%EOF
