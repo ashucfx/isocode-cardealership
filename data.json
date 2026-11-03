@@ -185,5 +185,39 @@
       "createdAt": "2026-11-03T09:30:58.120Z",
       "consent": true
     }
+  ],
+  "serviceBookings": [],
+  "tradeIns": [],
+  "historicalSales": [
+    {
+      "model": "Model C",
+      "year": 2022,
+      "km": 41000,
+      "price": 825000
+    },
+    {
+      "model": "Model C",
+      "year": 2022,
+      "km": 43800,
+      "price": 810000
+    },
+    {
+      "model": "Model S",
+      "year": 2021,
+      "km": 58000,
+      "price": 525000
+    }
+  ],
+  "workshops": [
+    {
+      "id": "workshop-hazratganj",
+      "name": "Hazratganj Service Centre",
+      "bays": 6
+    },
+    {
+      "id": "workshop-gomti",
+      "name": "Gomti Nagar Service Centre",
+      "bays": 8
+    }
   ]
 }

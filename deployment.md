@@ -37,4 +37,4 @@ Use PostgreSQL with Prisma migrations, a managed secret store, HTTPS-only cookie
 
 ## Known limitations
 
-The current build intentionally focuses on the core journey. It has lightweight English/Hindi navigation support, a local persistence adapter, deterministic AI-assistance fallback, and no payments, messaging integrations, or service booking.
+The current build intentionally focuses on the core journey. It has lightweight English/Hindi navigation support, a local persistence adapter, deterministic AI-assistance fallback, service requests with seeded workshop capacity, trade-in request capture, and no payments, messaging integrations, or DMS work orders.

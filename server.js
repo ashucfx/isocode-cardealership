@@ -35,6 +35,17 @@ function seed() {
       { id: "p-s-lko", vehicleId: "NEW-S-03", city: "Lucknow", exShowroom: 1675000, roadTax: 201000, insurance: 61200, accessories: 22000, validUntil: "2026-12-31", active: true }
     ],
     bookings: [],
+    serviceBookings: [],
+    tradeIns: [],
+    historicalSales: [
+      { model: "Model C", year: 2022, km: 41000, price: 825000 },
+      { model: "Model C", year: 2022, km: 43800, price: 810000 },
+      { model: "Model S", year: 2021, km: 58000, price: 525000 }
+    ],
+    workshops: [
+      { id: "workshop-hazratganj", name: "Hazratganj Service Centre", bays: 6 },
+      { id: "workshop-gomti", name: "Gomti Nagar Service Centre", bays: 8 }
+    ],
     leads: [
       { id: "lead-demo", name: "Riya Kapoor", email: "riya@example.test", phone: "+91 98765 43210", vehicleId: "NEW-H-02", showroomId: "lucknow", date: "2026-11-08", slot: "11:30", source: "Website", status: "NEW", assignedTo: "u-consultant", createdAt: new Date().toISOString(), consent: true }
     ]
@@ -50,6 +61,10 @@ function load() {
       delete user.password;
       migrated = true;
     }
+    if (!Array.isArray(data.serviceBookings)) { data.serviceBookings = []; migrated = true; }
+    if (!Array.isArray(data.tradeIns)) { data.tradeIns = []; migrated = true; }
+    if (!Array.isArray(data.historicalSales)) { data.historicalSales = seed().historicalSales; migrated = true; }
+    if (!Array.isArray(data.workshops)) { data.workshops = seed().workshops; migrated = true; }
   }
   if (migrated) fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
   return data;
@@ -99,6 +114,21 @@ async function api(req, res, url) {
       return json(res, 200, { vehicle: { ...v, registration: masked(v.registration), pricing: v.type === "NEW" ? priceFor(v.id) : null } });
     }
     if (req.method === "GET" && url.pathname === "/api/showrooms") return json(res, 200, { showrooms: db.showrooms });
+    if (req.method === "GET" && url.pathname === "/api/workshops") return json(res, 200, { workshops: db.workshops });
+    if (req.method === "GET" && url.pathname === "/api/service-availability") {
+      const date = url.searchParams.get("date"); const workshopId = url.searchParams.get("workshopId"); const workshop = db.workshops.find(w => w.id === workshopId); if (!workshop) return json(res, 404, { error: "Workshop not found." });
+      const booked = db.serviceBookings.filter(b => b.date === date && b.workshopId === workshopId).length; return json(res, 200, { available: booked < workshop.bays, remaining: Math.max(workshop.bays - booked, 0) });
+    }
+    if (req.method === "POST" && url.pathname === "/api/service-bookings") {
+      const input = await body(req); if (!input.consent || !input.name || !input.phone || !input.workshopId || !input.date || !input.serviceType) return json(res, 400, { error: "Complete the required fields and consent to continue." });
+      const workshop = db.workshops.find(w => w.id === input.workshopId); if (!workshop) return json(res, 400, { error: "Choose a valid workshop." });
+      if (db.serviceBookings.filter(b => b.date === input.date && b.workshopId === input.workshopId).length >= workshop.bays) return json(res, 409, { error: "That workshop is at capacity for this date." });
+      const booking = { id: `svc-${Date.now()}`, ...input, createdAt: new Date().toISOString() }; db.serviceBookings.push(booking); save(); return json(res, 201, { booking });
+    }
+    if (req.method === "POST" && url.pathname === "/api/trade-ins") {
+      const input = await body(req); if (!input.consent || !input.name || !input.phone || !input.model || !input.year || !input.km) return json(res, 400, { error: "Complete the required fields and consent to continue." });
+      const tradeIn = { id: `trade-${Date.now()}`, ...input, createdAt: new Date().toISOString(), status: "NEW" }; db.tradeIns.push(tradeIn); save(); return json(res, 201, { tradeIn });
+    }
     if (req.method === "GET" && url.pathname === "/api/availability") {
       const date = url.searchParams.get("date"); const taken = db.bookings.filter(b => b.date === date).map(b => b.slot); return json(res, 200, { slots: ["09:30", "11:30", "14:30", "16:30"].map(time => ({ time, available: !taken.includes(time) })) });
     }
@@ -114,6 +144,7 @@ async function api(req, res, url) {
     if (req.method === "PATCH" && url.pathname.startsWith("/api/leads/")) { const user = guard(req, res, ["SALES_CONSULTANT", "ADMIN"]); if (!user) return; const id = url.pathname.split("/").pop(); const lead = db.leads.find(l => l.id === id); if (!lead || (user.role !== "ADMIN" && lead.assignedTo !== user.id)) return json(res, 404, { error: "Lead not found." }); const input = await body(req); Object.assign(lead, { status: input.status || lead.status, contactedAt: input.status === "CONTACTED" ? new Date().toISOString() : lead.contactedAt }); save(); return json(res, 200, { lead }); }
     if (req.method === "POST" && url.pathname.match(/^\/api\/leads\/[^/]+\/ai-(summary|reply)$/)) { const user = guard(req, res, ["SALES_CONSULTANT", "ADMIN"]); if (!user) return; const id = url.pathname.split("/")[3]; const lead = db.leads.find(l => l.id === id); if (!lead) return json(res, 404, { error: "Lead not found." }); const vehicle = db.vehicles.find(v => v.id === lead.vehicleId); try { const kind = url.pathname.endsWith("summary") ? "summary" : "reply"; const result = await generateAiText(kind, lead, vehicle); return json(res, 200, { kind, draft: result.text, generated: result.source === "gemini", source: result.source }); } catch (error) { console.error("AI provider error:", error.message); return json(res, 503, { error: "AI assistance is temporarily unavailable. Write the response manually." }); } }
     if (req.method === "GET" && url.pathname === "/api/admin/pricing") { if (!guard(req, res, ["ADMIN"])) return; return json(res, 200, { pricing: db.pricing.map(p => ({ ...p, vehicle: db.vehicles.find(v => v.id === p.vehicleId) })) }); }
+    if (req.method === "GET" && url.pathname.startsWith("/api/admin/used-price-suggestion/")) { if (!guard(req, res, ["ADMIN"])) return; const vehicle = db.vehicles.find(v => v.id === url.pathname.split("/").pop()); if (!vehicle || vehicle.type !== "USED") return json(res, 404, { error: "Used vehicle not found." }); const matches = db.historicalSales.filter(s => s.model === vehicle.model && s.year === vehicle.year); if (!matches.length) return json(res, 404, { error: "No comparable historical sales found." }); const average = matches.reduce((sum, s) => sum + s.price, 0) / matches.length; return json(res, 200, { vehicleId: vehicle.id, low: Math.round(average * .97), high: Math.round(average * 1.03), disclaimer: "Suggestion only. Final price must be set by the used-car manager." }); }
     if (req.method === "PATCH" && url.pathname.startsWith("/api/admin/pricing/")) { if (!guard(req, res, ["ADMIN"])) return; const p = db.pricing.find(x => x.id === url.pathname.split("/").pop()); if (!p) return json(res, 404, { error: "Pricing record not found." }); const input = await body(req); for (const key of ["exShowroom", "roadTax", "insurance", "accessories"]) if (input[key] !== undefined && (!Number.isFinite(Number(input[key])) || Number(input[key]) < 0)) return json(res, 400, { error: "Pricing values must be non-negative numbers." }); Object.assign(p, input, { exShowroom: Number(input.exShowroom ?? p.exShowroom), roadTax: Number(input.roadTax ?? p.roadTax), insurance: Number(input.insurance ?? p.insurance), accessories: Number(input.accessories ?? p.accessories) }); save(); return json(res, 200, { pricing: p }); }
     return json(res, 404, { error: "Not found." });
   } catch (error) { console.error(error); return json(res, 500, { error: "Something went wrong. Please try again." }); }

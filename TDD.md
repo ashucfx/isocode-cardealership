@@ -5,7 +5,7 @@
 
 ## Problem and scope
 
-Brand X needs a premium customer journey that converts browsing into a test-drive lead and gives consultants an actionable inbox. This build covers inventory, transparent Lucknow pricing, test-drive booking, lead assignment, consultant assistance, admin pricing control, working inventory filters, price sorting, trust signals, and an interactive EMI planner. Payments, DMS, WhatsApp, service booking, and analytics are future scope.
+Brand X needs a premium customer journey that converts browsing into a test-drive lead and gives consultants an actionable inbox. This build covers inventory, transparent Lucknow pricing, test-drive booking, lead assignment, consultant assistance, admin pricing control, working inventory filters, price sorting, trust signals, an interactive EMI planner, service booking by workshop capacity, and trade-in requests. Payments, DMS, WhatsApp, and spare-parts commerce are future scope.
 
 ## Assumptions
 
@@ -13,6 +13,7 @@ Brand X needs a premium customer journey that converts browsing into a test-driv
 - Admin is the authorized used-car pricing role.
 - A local JSON repository is used for zero-dependency evaluation; the route and domain boundaries are designed for PostgreSQL/Prisma replacement. This is an explicit take-home trade-off, not a production database recommendation.
 - AI output is assistance only and must be reviewed.
+- Service capacity is represented by seeded workshop bays; the service request is a scheduling request, not a payment or DMS work order.
 
 ## Architecture
 
@@ -21,6 +22,7 @@ The Node server exposes REST-like JSON routes and serves a responsive static cli
 ## Business rules
 
 `onRoad = exShowroom + roadTax + insurance + accessories`. Only active, non-expired city records participate. Test-drive uniqueness is enforced by showroom/date/slot. A new lead is assigned to a consultant at the selected showroom; an unassigned lead is never silently presented as owned.
+Service requests are accepted only while the selected workshop has capacity for the date. Trade-in requests require consent and are explicitly valuation requests; no automated estimate changes listing prices. Historical used-car suggestions are admin-only and labelled as advisory.
 
 ## Security and privacy
 
@@ -32,4 +34,4 @@ The server constructs prompts from the lead and vehicle records only. In a deplo
 
 ## Testing and performance
 
-`npm test` covers the deterministic price calculation and missing-pricing behavior. Manual smoke testing covers inventory filtering, price sorting, EMI recalculation, responsive layout, authentication, and the buyer-to-consultant journey. The booking route re-checks availability to prevent races at the application boundary. Production follow-up should add PostgreSQL transaction tests and Playwright coverage. Static assets are small and images use responsive remote URLs; performance must be measured on the deployment target before making a 4G claim.
+`npm test` covers the deterministic price calculation and missing-pricing behavior. Manual smoke testing covers inventory filtering, price sorting, EMI recalculation, service capacity, trade-in consent, responsive layout, authentication, and the buyer-to-consultant journey. The booking route re-checks availability to prevent races at the application boundary. Production follow-up should add PostgreSQL transaction tests and Playwright coverage. Static assets are small and images use responsive remote URLs; performance must be measured on the deployment target before making a 4G claim.
