@@ -1,0 +1,14 @@
+{
+  "name": "brand-x-digital-showroom",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Brand X digital showroom take-home application",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
